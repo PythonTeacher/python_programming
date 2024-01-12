@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Wifi Map</title>
+    <style>
+      html, body, #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+    <script>
+      var data = {{data}};
+      var citymap = {};
+
+      for(var i=0; i<data.length; i++) {
+          position = data[i];
+          citymap[i.toString()] = {
+            center: new google.maps.LatLng(position['y'] , position['x'])
+          };
+      }
+
+      function initialize() {
+        var initLatLng = {lat: 37.5173050, lng: 127.0475020};
+
+        // Create the map.
+        var mapOptions = {
+          zoom: 15,
+          center: initLatLng,
+          mapTypeId: google.maps.MapTypeId.EARTH   // TERRAIN
+        };
+
+        var map = new google.maps.Map(document.getElementById('map-canvas'),
+                mapOptions);
+
+        for (var city in citymap) {
+          // add marker
+          var marker = new google.maps.Marker({
+            position: citymap[city].center,
+            title: 'Hello World!',
+            map: map
+          });
+        }
+      }
+
+      google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+  </head>
+  <body>
+    <div id="map-canvas"></div>
+  </body>
+</html>
